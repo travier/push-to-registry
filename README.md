@@ -25,7 +25,7 @@ Refer to the [`podman push`](http://docs.podman.io/en/latest/markdown/podman-man
 
 | Input Name | Description | Default |
 | ---------- | ----------- | ------- |
-| image	| Name of the image or manifest you want to push. Eg. `username/imagename` or `imagename`. Refer to [Image and Tag Inputs](https://github.com/redhat-actions/push-to-registry#image-tag-inputs). | **Required** - unless all tags include registry and image name
+| image | Name of the image or manifest you want to push. Eg. `username/imagename` or `imagename`. Refer to [Image and Tag Inputs](https://github.com/redhat-actions/push-to-registry#image-tag-inputs). | **Required** - unless all tags include registry and image name
 | tags | The tag or tags of the image or manifest to push. For multiple tags, separate by whitespace. Refer to [Image and Tag Inputs](https://github.com/redhat-actions/push-to-registry#image-tag-inputs). | `latest`
 | registry | Hostname and optional namespace to push the image to. Eg. `quay.io` or `quay.io/username`. Refer to [Image and Tag Inputs](https://github.com/redhat-actions/push-to-registry#image-tag-inputs). | **Required** - unless all tags include registry and image name
 | username | Username with which to authenticate to the registry. Required unless already logged in to the registry. | None
@@ -37,6 +37,7 @@ Refer to the [`podman push`](http://docs.podman.io/en/latest/markdown/podman-man
 <a id="image-tag-inputs"></a>
 
 ### Image, Tag and Registry Inputs
+
 The **push-to-registry** `image` and `tag` input work very similarly to [**buildah-build**](https://github.com/redhat-actions/buildah-build#image-tag-inputs).
 
 However, when using **push-to-registry** when the `tags` input are not fully qualified, the `registry` input must also be set.
@@ -46,20 +47,24 @@ So, for **push-to-registry** the options are as follows:
 **Option 1**: Provide `registry`, `image`, and `tags` inputs. The image(s) will be pushed to `${registry}/${image}:${tag}`.
 
 For example:
+
 ```yaml
 registry: quay.io/my-namespace
 image: my-image
 tags: v1 v1.0.0
 ```
+
 will push the image tags: `quay.io/my-namespace/my-image:v1` and `quay.io/my-namespace/my-image:v1.0.0`.
 
 **Option 2**: Provide only the `tags` input, including the fully qualified image name in each tag. In this case, the `registry` and `image` inputs are ignored.
 
 For example:
+
 ```yaml
 # 'registry' and 'image' inputs are not set
 tags: quay.io/my-namespace/my-image:v1 quay.io/my-namespace/my-image:v1.0.0
 ```
+
 will push the image tags: `quay.io/my-namespace/my-image:v1` and `quay.io/my-namespace/my-image:v1.0.0`.
 
 If the `tags` input does not have image names in the `${registry}/${name}:${tag}` form, then the `registry` and `image` inputs must be set.
@@ -68,6 +73,7 @@ If the `tags` input does not have image names in the `${registry}/${name}:${tag}
 
 `digest`: The pushed image digest, as written to the `digestfile`.<br>
 For example:
+
 ```
 sha256:66ce924069ec4181725d15aa27f34afbaf082f434f448dc07a42daa3305cdab3
 ```
@@ -144,11 +150,13 @@ If the image to push is present in both the Docker and Podman image storage, the
 If the action pulled an image from the Docker image storage into the Podman storage, it will be cleaned up from the Podman storage before the action exits.
 
 ## Note about GitHub runners and Podman
+
 We recommend using `runs-on: ubuntu-22.04` since it has a newer version of Podman.
 
 If you are on `ubuntu-20.04` or any other older versions of ubuntu your workflow will use an older version of Podman and may encounter issues such as [#26](https://github.com/redhat-actions/push-to-registry/issues/26).
 
 ## Troubleshooting
+
 Note that quay.io repositories are private by default.<br>
 
 This means that if you push an image for the first time, you will have to authenticate before pulling it, or go to the repository's settings and change its visibility.
